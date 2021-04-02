@@ -58,7 +58,13 @@ module.exports = function(_snowpackConfig, _pluginOptions) {
     fs.readFile(filePath, 'utf8', (error, content) => {
       if (error) throw error;
       Array.from(content.matchAll(partialsPattern), match => {
-        getPaths(match[1]).forEach(fullPath => partials[fullPath].add(filePath));
+        paths = (match[1].startsWith(root))
+          ? match[1]
+          : getPaths(match[1]);
+        paths.forEach(fullPath => {
+          partials[fullPath].add(filePath);
+          collectPartials(fullPath);
+        });
       });
     });
   }
