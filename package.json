@@ -4,6 +4,10 @@
   "main": "index.js",
   "author": "McK KIM <mckabi@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "start": "snowpack dev",
+    "build": "snowpack build"
+  },
   "devDependencies": {
     "posthtml": "^0.15.1",
     "posthtml-load-config": "^2.0.0",
