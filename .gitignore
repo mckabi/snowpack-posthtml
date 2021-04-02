@@ -1,0 +1,17 @@
+.cache
+**/dist
+**/build
+**/build-*
+*.zip
+
+.env
+.envrc
+.env.yml
+env.yml
+
+# package directories
+**/node_modules
+**/jspm_packages
+
+# Serverless directories
+**/.serverless

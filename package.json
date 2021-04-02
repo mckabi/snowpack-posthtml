@@ -1,0 +1,13 @@
+{
+  "name": "snowpack-posthtml",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "McK KIM <mckabi@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "posthtml": "^0.15.1",
+    "posthtml-load-config": "^2.0.0",
+    "posthtml-modules": "^0.7.4",
+    "snowpack": "^3.2.2"
+  }
+}
