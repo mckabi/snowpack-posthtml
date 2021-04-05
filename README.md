@@ -2,7 +2,7 @@
 
 ## Configurations
 
-### snowpack.config.js
+### Only snowpack.config.js
 
 ```javascript
 module.exports = {
