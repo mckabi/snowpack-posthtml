@@ -26,13 +26,13 @@ function posthtmlrc(ctx, loadPath, options) {
     });
 }
 
-module.exports = function(_snowpackConfig, _pluginOptions) {
-  const { root, mount } = _snowpackConfig;
-  const posthtmlConfig = posthtmlrc(_pluginOptions);
+module.exports = function(snowpackConfig, pluginOptions) {
+  const { root, mount } = snowpackConfig;
+  const posthtmlConfig = posthtmlrc(pluginOptions);
   const supportExtends = ['.html', '.posthtml'];
   // <module href="/partials/head.html" ...
   // <include src="components/button.html" ...
-  const partialsPattern = new RegExp(`\\b(?:href|src)="([^"]+\.(?:${supportExtends.join('|')}))"`, 'g');
+  const partialsPattern = new RegExp(`<\\w+.*\\b(?:href|src)="([^"]+\.(?:${supportExtends.join('|')}))"`, 'g');
 
   const scanned = new Set();
   const partials = new Proxy(new Map(), {
@@ -62,9 +62,8 @@ module.exports = function(_snowpackConfig, _pluginOptions) {
     fs.readFile(filePath, 'utf8', (error, content) => {
       if (error) throw error;
       Array.from(content.matchAll(partialsPattern), match => {
-        paths = (match[1].startsWith(root))
-          ? match[1]
-          : getPaths(match[1]);
+        if (match[0].startsWith('<a ') || match[0].startsWith('<link ')) return;
+        paths = (match[1].startsWith(root)) ? [match[1]] : getPaths(match[1]);
         paths.forEach(fullPath => {
           partials[fullPath].add(filePath);
           collectPartials(fullPath);
@@ -80,8 +79,7 @@ module.exports = function(_snowpackConfig, _pluginOptions) {
       output: ['.html'],
     },
     async load({filePath, isDev}) {
-      if (!isDev) return;
-      await collectPartials(filePath);
+      if (isDev) await collectPartials(filePath);
     },
     async transform({ fileExt, contents }) {
       if (!supportExtends.includes(fileExt) || !contents) return;
