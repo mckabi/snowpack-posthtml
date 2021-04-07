@@ -34,6 +34,7 @@ module.exports = function(_snowpackConfig, _pluginOptions) {
   // <include src="components/button.html" ...
   const partialsPattern = new RegExp(`\\b(?:href|src)="([^"]+\.(?:${supportExtends.join('|')}))"`, 'g');
 
+  const scanned = new Set();
   const partials = new Proxy(new Map(), {
     get(target, name) {
       const ret = Reflect.get(target, name);
@@ -55,6 +56,9 @@ module.exports = function(_snowpackConfig, _pluginOptions) {
   }
 
   async function collectPartials(filePath) {
+    if (scanned.has(filePath)) return;
+    scanned.add(filePath);
+
     fs.readFile(filePath, 'utf8', (error, content) => {
       if (error) throw error;
       Array.from(content.matchAll(partialsPattern), match => {
