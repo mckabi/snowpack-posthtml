@@ -12,6 +12,6 @@
     "posthtml": "^0.15.1",
     "posthtml-load-config": "^2.0.0",
     "posthtml-modules": "^0.7.4",
-    "snowpack": "^3.2.2"
+    "snowpack": "^3.8.0"
   }
 }
